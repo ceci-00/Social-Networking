@@ -2,12 +2,11 @@
 const express = require('express');
 const db = require('./config/connection');
 const routes = require('./routes');
-// Define the current working directory
-const cwd = process.cwd();
 // Define the port the server will run on
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
+//initialize express app
 const app = express();
-// set up middleware
+// set up middleware for parsing JSON and urlencoded form data
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(routes);

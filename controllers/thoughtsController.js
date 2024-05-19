@@ -7,8 +7,8 @@ const thoughtsController = {
             console.log(err);
             res.status(400).json(err);
         });
-    }
-}
+    },
+
 // create thought
 createThought(req, res) {
     Thought.create(req.body).then(({ _id }) => {
@@ -26,7 +26,7 @@ createThought(req, res) {
         res.json(dbUserData);
     })
     .catch(err => res.json(err));
-}
+},
 
 // get thought by id
 getThoughtById(req, res) {
@@ -39,7 +39,7 @@ getThoughtById(req, res) {
         res.json(dbThoughtData);
     })
     .catch(err => res.status(400).json(err));
-}
+},
 
 // update thought by id
 updateThought(req, res) {
@@ -55,7 +55,7 @@ updateThought(req, res) {
              res.json(dbThoughtData);
          })
             .catch(err => res.status(400).json(err));
-}
+},
 // delete thought
 deleteThought(req, res) {
     Thought.findOneAndDelete({ _id: req.params.id })
@@ -77,7 +77,7 @@ deleteThought(req, res) {
         }
         res.json(dbUserData);
     })
-}
+},
 
 // add reaction
 addReaction(req, res) {
@@ -96,7 +96,7 @@ addReaction(req, res) {
         res.json(dbThoughtData);
     })
     .catch(err => res.json(err));
-}
+},
 
 // remove reaction
 removeReaction(req, res) {
@@ -109,5 +109,6 @@ removeReaction(req, res) {
     .then(dbThoughtData => res.json(dbThoughtData))
     .catch(err => res.json(err));
 }
+};
 
 module.exports = thoughtsController;

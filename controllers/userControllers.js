@@ -60,10 +60,13 @@ const userController = {
         console.log('You are adding a friend!');
         console.log(req.body);
         User.findOneAndUpdate(
+            // find the user by id
             { _id: req.params.userId },
+            // add the friend's id to the user's friends array
             { $push: { friends: req.params.friendId } },
             { runValidators: true,
                 new: true }
+                // return the updated user
         ).then((dbUserData) => {
             if (!dbUserData) {
                 res.status(404).json({ message: 'No user found with this id!' });

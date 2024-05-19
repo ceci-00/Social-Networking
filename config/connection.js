@@ -1,9 +1,7 @@
-const mongoose = require('mongoose');
-// Connect to the database
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/social-network-api', {
-    useFindAndModify: false,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-    });
-// Export the connection
-module.exports = mongoose.connection;
+const { connect, connection } = require('mongoose');
+// select the database to use
+const connectionString = 'mongodb://127.0.0.1:27017/thoughtsDB';
+// connect to the database
+connect(connectionString);
+
+module.exports = connection;
