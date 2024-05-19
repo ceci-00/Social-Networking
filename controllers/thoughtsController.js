@@ -1,7 +1,5 @@
-const { get } = require('http');
 const { Thought, User } = require('../models');
 const { db } = require('../models/User');
-const { create } = require('domain');
 // get all thoughts
 const thoughtsController = {
     getAllThoughts(req, res) {
