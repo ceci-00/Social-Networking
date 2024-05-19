@@ -1,8 +1,40 @@
 const { Schema, model } = require('mongoose');
 // import the date format
 const dateFormat = require('../utils/dateFormat');
-// import the reaction schema
-const reactionSchema = require('./Reaction');
+
+// Schema for the Reaction model
+const ReactionSchema = new Schema(
+    {
+        // reactionId validation
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            default: () => new Types.ObjectId()
+        },
+        // reaction body validation
+        reactionBody: {
+            type: String,
+            required: 'You need to provide a reaction!',
+            maxlength: 280
+        },
+        // username validation
+        username: {
+            type: String,
+            required: 'You need to provide a username!'
+        },
+        // date validation
+        createdAt: {
+            type: Date,
+            default: Date.now(),
+            get: createdAtVal => dateFormat(createdAtVal)
+        }
+    },
+    {
+        toJSON: {
+            getters: true
+        },
+        id: false
+    }
+);
 // Schema for the Thought model
 const ThoughtSchema = new Schema(
     {
@@ -25,7 +57,7 @@ const ThoughtSchema = new Schema(
             required: 'You need to provide a username!'
         },
         // reactions array
-        reactions: [reactionSchema]
+        reactions: [ReactionSchema]
     },
     {
         // virtual to get reaction count on query
