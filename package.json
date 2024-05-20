@@ -5,13 +5,18 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index"
+    "start": "node server.js",
+    "watch": "nodemon server.js",
+    "seed": "node utils/seeds.js"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^10.0.0",
     "express": "^4.19.2",
-    "mongoose": "^8.3.3"
+    "mongodb": "^6.6.1",
+    "mongoose": "^6.12.8",
+    "node": "^20.13.0",
+    "nodemon": "^3.1.0"
   }
 }
