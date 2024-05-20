@@ -1,5 +1,4 @@
-const { Schema, Types, model } = require('mongoose');
-const thoughtSchema = require('./Thought');
+const { Schema, model } = require('mongoose');
 // create the User schema
 const UserSchema = new Schema(
     {
@@ -15,10 +14,16 @@ const UserSchema = new Schema(
             type: String,
             required: 'You need to provide an email!',
             unique: true,
-            match: [/.+@.+\..+/, 'Please enter a valid e-mail address']
+            match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+             'Please enter a valid e-mail address']
         },
         // data from the Thought model
-        thoughts: [thoughtSchema],
+        thoughts: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Thought'
+            }
+        ],
         // gather the friends of the user
         friends: [
             {
@@ -26,7 +31,9 @@ const UserSchema = new Schema(
                 ref: 'User'
             }
         ],
-        // virtual to get friend count on query
+    },
+    {
+        // virtual to get total count of friends
     toJSON: {
         virtuals: true,
         getters: true
