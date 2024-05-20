@@ -1,7 +1,16 @@
-const { connect, connection } = require('mongoose');
-// select the database to use
-const connectionString = 'mongodb://127.0.0.1:27017/thoughtsDB';
-// connect to the database
-connect(connectionString);
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-module.exports = connection;
+const connectToMongoDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/social-networking', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('Connected to MongoDB');
+    } catch (error) {
+        console.error('Failed to connect to MongoDB', error);
+    }
+};
+
+module.exports = connectToMongoDB;
