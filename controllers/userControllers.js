@@ -21,7 +21,7 @@ const userController = {
     // update user by id
     updateUser(req, res) {
         User.findOneAndUpdate({
-            _id: req.params.id }, 
+            _id: req.params.userId }, 
             { $set: req.body }, 
             { runValidators: true, new: true }
         ).then((dbUserData) => {
@@ -34,7 +34,7 @@ const userController = {
     },
     // delete user
     deleteUser(req, res) {
-        User.findOneAndDelete({ _id: req.params.id })
+        User.findOneAndDelete({ _id: req.params.userId })
         .then((dbUserData) => {
             if (!dbUserData) {
                 res.status(404).json({ message: 'No user found with this id!' });
@@ -45,7 +45,7 @@ const userController = {
     },
     // get user by id
     getUserById(req, res) {
-        User.findOne({ _id: req.params.id })
+        User.findOne({ _id: req.params.userId })
         .then((dbUserData) => {
             if (!dbUserData) {
                 res.status(404).json({ message: 'No user found with this id!' });
