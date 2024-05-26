@@ -1,6 +1,4 @@
-const { create } = require('domain');
 const { Thought, User } = require('../models');
-const { run } = require('node:test');
 const req = require('express').request;
 // get all users
 const userController = {
@@ -9,15 +7,18 @@ const userController = {
         .then((dbUserData) => res.json(dbUserData))
         .catch((err) => {
             console.log(err);
-            res.status(400).json(err);
+            res.status(400).json({ message: 'unable to get all users' });
         });
     },
     // create user
-    createUser({ body }, res) {
-        User.create(body)
+    createUser(req, res) {
+        User.create(req.body)
         .then((dbUserData) => res.json(dbUserData))
-        .catch((err) => res.status(400).json(err));
-    },
+        .catch(err => {
+        console.log(err);
+        res.status(400).json({ message: 'unable to create user' });
+    });
+},
     // update user by id
     updateUser(req, res) {
         User.findOneAndUpdate({
@@ -30,7 +31,10 @@ const userController = {
                 return;
             }
             res.json(dbUserData);
-        }).catch((err) => res.status(400).json(err));
+        }).catch(err => {
+            console.log(err);
+            res.status(400).json({ message: 'unable to update user' });
+        });
     },
     // delete user
     deleteUser(req, res) {
@@ -41,7 +45,10 @@ const userController = {
                 return;
             }
             res.json(dbUserData);
-        }).catch((err) => res.status(400).json(err));
+        }).catch(err => {
+            console.log(err);
+            res.status(400).json({ message: 'unable to delete user' });
+        });
     },
     // get user by id
     getUserById(req, res) {
@@ -52,28 +59,32 @@ const userController = {
                 return;
             }
             res.json(dbUserData);
-        }).catch((err) => res.status(400).json(err));
+        }).catch(err => {
+            console.log(err);
+            res.status(400).json({ message: 'unable to get user by id' });
+    });
     },
 
     //add friend
     addFriend(req, res) {
-        console.log('You are adding a friend!');
-        console.log(req.body);
-        User.findOneAndUpdate(
-            // find the user by id
-            { _id: req.params.userId },
-            // add the friend's id to the user's friends array
-            { $push: { friends: req.params.friendId } },
-            { runValidators: true,
-                new: true }
-                // return the updated user
-        ).then((dbUserData) => {
-            if (!dbUserData) {
-                res.status(404).json({ message: 'No user found with this id!' });
-                return;
-            }
-            res.json(dbUserData);
-        }).catch((err) => res.json(err));
+        const userId = req.params.userId;
+        const friendId = req.body.friendId;
+
+        User.findByIdAndUpdate(
+            userId,
+            { $addToSet: { friends: friendId } },
+            { new: true, runValidators: true }
+        )
+            .then(updatedUser => {
+                if (!updatedUser) {
+                    return res.status(404).json({ message: 'User not found' });
+                }
+                res.json(updatedUser);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).json({ message: 'Internal server error' });
+            });
     },
     // remove friend
     removeFriend(req, res) {
