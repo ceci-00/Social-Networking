@@ -36,6 +36,11 @@ router
 router
     .route('/:userId/friends/:friendId')
     .post(addFriend)
+    /*
+{
+	"friendId": "664fd9b6b497d7ee54d7efeb" // friend's id
+}
+*/
     .delete(removeFriend);
 
 module.exports = router;
