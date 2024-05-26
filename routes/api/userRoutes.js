@@ -10,12 +10,27 @@ const {
 } = require('../../controllers/userControllers');
 
 //api/users
-router.route('/').get(getAllUsers).post(createUser);
+router.route('/')
+.get(getAllUsers)
+.post(createUser);
+/*
+{
+    "username": "john_doe",
+    "email": "jtothed@gmail.com"
+}
+*/
+
 //api/users/:userId
 router
     .route('/:userId')
     .get(getUserById)
     .put(updateUser)
+    /*
+{
+    "username": "john_doe",
+    "email": "jtothed@gmail.com"
+}
+*/
     .delete(deleteUser);
 //api/users/:userId/friends/:friendId
 router
